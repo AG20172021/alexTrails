@@ -1,3 +1,6 @@
+/* Leaflet CSS - must be imported for maps to work */
+@import 'leaflet/dist/leaflet.css';
+
 * {
   margin: 0;
   padding: 0;
