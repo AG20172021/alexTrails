@@ -1,4 +1,64 @@
-import { Trail, Campsite, Review } from '../types';
+import { Trail, Campsite, Review, TrailPoint } from '../types';
+
+// Helper function to generate a trail path with realistic elevation changes
+function generateTrailPath(
+  startLat: number,
+  startLng: number,
+  endLat: number,
+  endLng: number,
+  totalDistance: number,
+  baseElevation: number,
+  elevationGain: number,
+  points: number = 50
+): TrailPoint[] {
+  const path: TrailPoint[] = [];
+  const latStep = (endLat - startLat) / points;
+  const lngStep = (endLng - startLng) / points;
+  const distanceStep = totalDistance / points;
+  
+  // Create a realistic elevation profile with climbs and descents
+  let currentElevation = baseElevation;
+  const elevationPerPoint = elevationGain / points;
+  
+  for (let i = 0; i <= points; i++) {
+    // Add some variation to make it look realistic
+    const variation = Math.sin(i * 0.3) * 200 + Math.sin(i * 0.8) * 100;
+    const climbFactor = (i / points) * elevationGain;
+    
+    path.push({
+      lat: startLat + latStep * i + (Math.random() - 0.5) * 0.001,
+      lng: startLng + lngStep * i + (Math.random() - 0.5) * 0.001,
+      elevation: Math.round(baseElevation + climbFactor + variation),
+      distance: Math.round(distanceStep * i * 100) / 100
+    });
+  }
+  
+  return path;
+}
+
+// Helper to get min/max elevation from path
+function getElevationRange(path: TrailPoint[]): { min: number; max: number } {
+  const elevations = path.map(p => p.elevation);
+  return {
+    min: Math.min(...elevations),
+    max: Math.max(...elevations)
+  };
+}
+
+// Generate trail paths for each trail
+const trail1Path = generateTrailPath(35.797, -82.957, 35.891, -82.827, 21.5, 3200, 4200);
+const trail2Path = generateTrailPath(33.059, -116.412, 33.284, -116.631, 28.3, 2800, 5200);
+const trail3Path = generateTrailPath(40.342, -105.683, 40.398, -105.621, 14.2, 7600, 2800);
+const trail4Path = generateTrailPath(42.145, -74.112, 42.183, -74.350, 24.0, 2200, 6800);
+const trail5Path = generateTrailPath(22.201, -159.575, 22.181, -159.668, 22.0, 200, 3800);
+const trail6Path = generateTrailPath(39.101, -106.982, 39.072, -107.082, 26.7, 9600, 7800);
+
+const trail1Elevation = getElevationRange(trail1Path);
+const trail2Elevation = getElevationRange(trail2Path);
+const trail3Elevation = getElevationRange(trail3Path);
+const trail4Elevation = getElevationRange(trail4Path);
+const trail5Elevation = getElevationRange(trail5Path);
+const trail6Elevation = getElevationRange(trail6Path);
 
 export const sampleTrails: Trail[] = [
   {
@@ -17,7 +77,10 @@ export const sampleTrails: Trail[] = [
     waterSources: 8,
     permitRequired: false,
     description: 'A stunning section of the Appalachian Trail featuring the iconic Max Patch bald with 360° views, lush forests, and ending in the historic town of Hot Springs. This stretch offers incredible mountain vistas, diverse ecosystems, and well-maintained campsites.',
-    heroImage: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200'
+    heroImage: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200',
+    trailPath: trail1Path,
+    minElevation: trail1Elevation.min,
+    maxElevation: trail1Elevation.max
   },
   {
     id: '2',
@@ -35,7 +98,10 @@ export const sampleTrails: Trail[] = [
     waterSources: 6,
     permitRequired: true,
     description: 'A beautiful desert-to-mountain transition section of the PCT. Starting at the famous Eagle Rock, hikers traverse rolling hills, oak woodlands, and pine forests before descending to Warner Springs. Great for viewing wildflowers in spring.',
-    heroImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200'
+    heroImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200',
+    trailPath: trail2Path,
+    minElevation: trail2Elevation.min,
+    maxElevation: trail2Elevation.max
   },
   {
     id: '3',
@@ -53,7 +119,10 @@ export const sampleTrails: Trail[] = [
     waterSources: 4,
     permitRequired: true,
     description: 'A pristine alpine lake trail that winds through old-growth pine forests and wildflower meadows. The crystal-clear lake sits at 10,200 feet elevation, surrounded by granite peaks. Perfect for a weekend getaway with excellent fishing and photography opportunities.',
-    heroImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200'
+    heroImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200',
+    trailPath: trail3Path,
+    minElevation: trail3Elevation.min,
+    maxElevation: trail3Elevation.max
   },
   {
     id: '4',
@@ -71,7 +140,10 @@ export const sampleTrails: Trail[] = [
     waterSources: 5,
     permitRequired: false,
     description: 'Known as the hardest trail in the Catskills, Devil\'s Path lives up to its name with steep scrambles, multiple peaks over 3,500 feet, and technical descents. This traverse covers the entire eastern section including Indian Head, Twin, Sugarloaf, Plateau, and West Kill Mountains.',
-    heroImage: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200'
+    heroImage: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200',
+    trailPath: trail4Path,
+    minElevation: trail4Elevation.min,
+    maxElevation: trail4Elevation.max
   },
   {
     id: '5',
@@ -89,7 +161,10 @@ export const sampleTrails: Trail[] = [
     waterSources: 3,
     permitRequired: true,
     description: 'One of the most spectacular coastal hikes in the world. The Kalalau Trail follows the dramatic Nā Pali coastline with towering sea cliffs, secluded beaches, and lush valleys. Hanakāpīʻai and Kalalau beaches provide idyllic camping spots.',
-    heroImage: 'https://images.unsplash.com/photo-1546975490-e8b67ccb8f5e?w=1200'
+    heroImage: 'https://images.unsplash.com/photo-1546975490-e8b67ccb8f5e?w=1200',
+    trailPath: trail5Path,
+    minElevation: trail5Elevation.min,
+    maxElevation: trail5Elevation.max
   },
   {
     id: '6',
@@ -107,44 +182,47 @@ export const sampleTrails: Trail[] = [
     waterSources: 7,
     permitRequired: true,
     description: 'The crown jewel of Colorado backpacking. This loop takes hikers over four 12,000+ foot passes with breathtaking views of the Maroon Bells, Snowmass Mountain, and the entire Elk Range. Wildflower-filled meadows and pristine alpine lakes dot the route.',
-    heroImage: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200'
+    heroImage: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200',
+    trailPath: trail6Path,
+    minElevation: trail6Elevation.min,
+    maxElevation: trail6Elevation.max
   }
 ];
 
 export const sampleCampsites: Record<string, Campsite[]> = {
   '1': [
-    { id: 'c1-1', name: 'Roaring Fork Shelter', mileMarker: 5.2, water: true, fire: true, bearBox: true, toilet: true, capacity: 12, rating: 4.5 },
-    { id: 'c1-2', name: 'Deer Park Gap', mileMarker: 11.8, water: true, fire: true, bearBox: false, toilet: false, capacity: 6, rating: 4.2 },
-    { id: 'c1-3', name: 'Tumbling Run', mileMarker: 16.5, water: true, fire: true, bearBox: true, toilet: true, capacity: 10, rating: 4.7 },
-    { id: 'c1-4', name: 'Hot Springs Access', mileMarker: 21.5, water: true, fire: false, bearBox: false, toilet: true, capacity: 4, rating: 3.8 }
+    { id: 'c1-1', name: 'Roaring Fork Shelter', mileMarker: 5.2, water: true, fire: true, bearBox: true, toilet: true, capacity: 12, rating: 4.5, coordinates: { lat: 35.815, lng: -82.925 } },
+    { id: 'c1-2', name: 'Deer Park Gap', mileMarker: 11.8, water: true, fire: true, bearBox: false, toilet: false, capacity: 6, rating: 4.2, coordinates: { lat: 35.838, lng: -82.890 } },
+    { id: 'c1-3', name: 'Tumbling Run', mileMarker: 16.5, water: true, fire: true, bearBox: true, toilet: true, capacity: 10, rating: 4.7, coordinates: { lat: 35.865, lng: -82.855 } },
+    { id: 'c1-4', name: 'Hot Springs Access', mileMarker: 21.5, water: true, fire: false, bearBox: false, toilet: true, capacity: 4, rating: 3.8, coordinates: { lat: 35.891, lng: -82.827 } }
   ],
   '2': [
-    { id: 'c2-1', name: 'Scissors Crossing', mileMarker: 4.5, water: false, fire: false, bearBox: false, toilet: false, capacity: 4, rating: 3.5 },
-    { id: 'c2-2', name: 'Mount Laguna', mileMarker: 12.3, water: true, fire: true, bearBox: true, toilet: true, capacity: 15, rating: 4.6 },
-    { id: 'c2-3', name: 'Pioneer Mail', mileMarker: 17.8, water: true, fire: true, bearBox: true, toilet: false, capacity: 8, rating: 4.3 },
-    { id: 'c2-4', name: 'Cibbets Flat', mileMarker: 23.1, water: true, fire: true, bearBox: false, toilet: false, capacity: 6, rating: 4.0 },
-    { id: 'c2-5', name: 'Warner Springs Camp', mileMarker: 28.3, water: true, fire: true, bearBox: true, toilet: true, capacity: 20, rating: 4.4 }
+    { id: 'c2-1', name: 'Scissors Crossing', mileMarker: 4.5, water: false, fire: false, bearBox: false, toilet: false, capacity: 4, rating: 3.5, coordinates: { lat: 33.095, lng: -116.395 } },
+    { id: 'c2-2', name: 'Mount Laguna', mileMarker: 12.3, water: true, fire: true, bearBox: true, toilet: true, capacity: 15, rating: 4.6, coordinates: { lat: 33.165, lng: -116.465 } },
+    { id: 'c2-3', name: 'Pioneer Mail', mileMarker: 17.8, water: true, fire: true, bearBox: true, toilet: false, capacity: 8, rating: 4.3, coordinates: { lat: 33.215, lng: -116.525 } },
+    { id: 'c2-4', name: 'Cibbets Flat', mileMarker: 23.1, water: true, fire: true, bearBox: false, toilet: false, capacity: 6, rating: 4.0, coordinates: { lat: 33.255, lng: -116.585 } },
+    { id: 'c2-5', name: 'Warner Springs Camp', mileMarker: 28.3, water: true, fire: true, bearBox: true, toilet: true, capacity: 20, rating: 4.4, coordinates: { lat: 33.284, lng: -116.631 } }
   ],
   '3': [
-    { id: 'c3-1', name: 'Boulder Basin Camp', mileMarker: 3.2, water: true, fire: true, bearBox: true, toilet: true, capacity: 8, rating: 4.5 },
-    { id: 'c3-2', name: 'Alpine Meadow', mileMarker: 8.7, water: false, fire: true, bearBox: true, toilet: false, capacity: 6, rating: 4.8 },
-    { id: 'c3-3', name: 'Lake Serenity Shore', mileMarker: 14.2, water: true, fire: true, bearBox: true, toilet: true, capacity: 12, rating: 4.9 }
+    { id: 'c3-1', name: 'Boulder Basin Camp', mileMarker: 3.2, water: true, fire: true, bearBox: true, toilet: true, capacity: 8, rating: 4.5, coordinates: { lat: 40.355, lng: -105.675 } },
+    { id: 'c3-2', name: 'Alpine Meadow', mileMarker: 8.7, water: false, fire: true, bearBox: true, toilet: false, capacity: 6, rating: 4.8, coordinates: { lat: 40.375, lng: -105.650 } },
+    { id: 'c3-3', name: 'Lake Serenity Shore', mileMarker: 14.2, water: true, fire: true, bearBox: true, toilet: true, capacity: 12, rating: 4.9, coordinates: { lat: 40.398, lng: -105.621 } }
   ],
   '4': [
-    { id: 'c4-1', name: 'Prediger Road', mileMarker: 4.0, water: true, fire: true, bearBox: false, toilet: false, capacity: 4, rating: 3.9 },
-    { id: 'c4-2', name: 'Mink Hollow', mileMarker: 10.5, water: true, fire: true, bearBox: true, toilet: true, capacity: 10, rating: 4.4 },
-    { id: 'c4-3', name: 'Devil\'s Kitchen', mileMarker: 16.2, water: true, fire: true, bearBox: true, toilet: false, capacity: 8, rating: 4.6 },
-    { id: 'c4-4', name: 'Diamond Notch', mileMarker: 21.8, water: true, fire: true, bearBox: true, toilet: true, capacity: 12, rating: 4.7 }
+    { id: 'c4-1', name: 'Prediger Road', mileMarker: 4.0, water: true, fire: true, bearBox: false, toilet: false, capacity: 4, rating: 3.9, coordinates: { lat: 42.155, lng: -74.128 } },
+    { id: 'c4-2', name: 'Mink Hollow', mileMarker: 10.5, water: true, fire: true, bearBox: true, toilet: true, capacity: 10, rating: 4.4, coordinates: { lat: 42.162, lng: -74.210 } },
+    { id: 'c4-3', name: 'Devil\'s Kitchen', mileMarker: 16.2, water: true, fire: true, bearBox: true, toilet: false, capacity: 8, rating: 4.6, coordinates: { lat: 42.171, lng: -74.278 } },
+    { id: 'c4-4', name: 'Diamond Notch', mileMarker: 21.8, water: true, fire: true, bearBox: true, toilet: true, capacity: 12, rating: 4.7, coordinates: { lat: 42.180, lng: -74.342 } }
   ],
   '5': [
-    { id: 'c5-1', name: 'Hanakāpīʻai Beach', mileMarker: 8.0, water: true, fire: true, bearBox: true, toilet: false, capacity: 15, rating: 4.8 },
-    { id: 'c5-2', name: 'Kalalau Beach', mileMarker: 22.0, water: true, fire: true, bearBox: true, toilet: true, capacity: 30, rating: 4.9 }
+    { id: 'c5-1', name: 'Hanakāpīʻai Beach', mileMarker: 8.0, water: true, fire: true, bearBox: true, toilet: false, capacity: 15, rating: 4.8, coordinates: { lat: 22.196, lng: -159.585 } },
+    { id: 'c5-2', name: 'Kalalau Beach', mileMarker: 22.0, water: true, fire: true, bearBox: true, toilet: true, capacity: 30, rating: 4.9, coordinates: { lat: 22.181, lng: -159.668 } }
   ],
   '6': [
-    { id: 'c6-1', name: 'Geneva Lake', mileMarker: 6.5, water: true, fire: true, bearBox: true, toilet: false, capacity: 10, rating: 4.7 },
-    { id: 'c6-2', name: 'Fravert Basin', mileMarker: 12.3, water: true, fire: true, bearBox: true, toilet: true, capacity: 15, rating: 4.8 },
-    { id: 'c6-3', name: 'Snowmass Lake', mileMarker: 18.9, water: true, fire: true, bearBox: true, toilet: true, capacity: 20, rating: 4.9 },
-    { id: 'c6-4', name: 'Copper Lake', mileMarker: 23.4, water: true, fire: true, bearBox: true, toilet: false, capacity: 8, rating: 4.6 }
+    { id: 'c6-1', name: 'Geneva Lake', mileMarker: 6.5, water: true, fire: true, bearBox: true, toilet: false, capacity: 10, rating: 4.7, coordinates: { lat: 39.085, lng: -106.965 } },
+    { id: 'c6-2', name: 'Fravert Basin', mileMarker: 12.3, water: true, fire: true, bearBox: true, toilet: true, capacity: 15, rating: 4.8, coordinates: { lat: 39.078, lng: -107.005 } },
+    { id: 'c6-3', name: 'Snowmass Lake', mileMarker: 18.9, water: true, fire: true, bearBox: true, toilet: true, capacity: 20, rating: 4.9, coordinates: { lat: 39.068, lng: -107.055 } },
+    { id: 'c6-4', name: 'Copper Lake', mileMarker: 23.4, water: true, fire: true, bearBox: true, toilet: false, capacity: 8, rating: 4.6, coordinates: { lat: 39.072, lng: -107.082 } }
   ]
 };
 

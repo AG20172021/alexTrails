@@ -1,5 +1,22 @@
 export type Difficulty = 'Easy' | 'Moderate' | 'Hard' | 'Expert';
 
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+export interface TrailPoint {
+  lat: number;
+  lng: number;
+  elevation: number;
+  distance: number; // Cumulative distance in miles
+}
+
+export interface ElevationPoint {
+  distance: number; // Distance along trail in miles
+  elevation: number; // Elevation in feet
+}
+
 export interface Trail {
   id: string;
   name: string;
@@ -17,6 +34,10 @@ export interface Trail {
   permitRequired: boolean;
   description: string;
   heroImage: string;
+  // New fields for map and elevation
+  trailPath: TrailPoint[]; // Array of GPS coordinates with elevation
+  minElevation: number;
+  maxElevation: number;
 }
 
 export interface Campsite {
@@ -29,6 +50,7 @@ export interface Campsite {
   toilet: boolean;
   capacity: number;
   rating: number;
+  coordinates: LatLng;
 }
 
 export interface Review {

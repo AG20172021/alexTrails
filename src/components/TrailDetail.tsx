@@ -1,11 +1,13 @@
 import { 
   ArrowLeft, MapPin, Star, Clock, TrendingUp, 
   Droplets, Mountain, AlertCircle, CheckCircle2,
-  Tent, Shield, Flame, ChevronRight
+  Tent, Shield, Flame, ChevronRight, Map as MapIcon, Activity
 } from 'lucide-react';
 import { Trail, Campsite, Review } from '../types';
 import ReviewCard from './ReviewCard';
 import CampsiteCard from './CampsiteCard';
+import TrailMap from './TrailMap';
+import ElevationProfile from './ElevationProfile';
 
 interface TrailDetailProps {
   trail: Trail;
@@ -126,6 +128,38 @@ export default function TrailDetail({
                   </div>
                 </div>
               )}
+            </section>
+
+            {/* Map Section */}
+            <section className="trail-detail-map-section">
+              <h2>
+                <MapIcon size={24} />
+                Trail Map & Campsites
+              </h2>
+              <div className="trail-detail-map-container">
+                <TrailMap 
+                  trail={trail} 
+                  campsites={campsites} 
+                  height="400px"
+                />
+                <p className="trail-detail-map-description">
+                  Interactive map showing the complete trail route (green line), start point (S), end point (E), and all campsites (🏕️). 
+                  Click on campsite markers to see details. Map includes USGS topographic layer.
+                </p>
+              </div>
+            </section>
+
+            {/* Elevation Profile */}
+            <section className="detail-section">
+              <h2>
+                <Activity size={24} style={{ marginRight: '0.5rem', verticalAlign: 'middle', color: 'var(--primary)' }} />
+                Elevation Profile
+              </h2>
+              <ElevationProfile 
+                trail={trail} 
+                campsites={campsites}
+                height={280}
+              />
             </section>
 
             {/* Campsites */}

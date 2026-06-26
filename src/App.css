@@ -1654,6 +1654,166 @@ button.secondary:hover {
   background: var(--border-light);
 }
 
+/* Trail Map */
+.trail-map {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.trail-map .leaflet-container {
+  border-radius: 12px;
+}
+
+/* Elevation Profile */
+.elevation-profile {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.elevation-header {
+  margin-bottom: 1rem;
+}
+
+.elevation-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.elevation-stats .stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.elevation-stats .stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.elevation-stats .stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.elevation-chart {
+  margin: 1rem 0;
+}
+
+.elevation-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.elevation-legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.elevation-legend .legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.elevation-legend .legend-color.trail {
+  background: #2D6A4F;
+}
+
+.elevation-legend .legend-color.campsite {
+  background: transparent;
+}
+
+.elevation-legend .legend-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Elevation Tooltip */
+.elevation-tooltip {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  box-shadow: var(--shadow);
+  font-size: 0.875rem;
+}
+
+.elevation-tooltip .tooltip-distance {
+  color: var(--text-muted);
+  margin: 0 0 4px 0;
+  font-size: 0.75rem;
+}
+
+.elevation-tooltip .tooltip-elevation {
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+}
+
+.elevation-tooltip .tooltip-campsite {
+  color: var(--text);
+  margin: 4px 0 0 0;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+
+/* Trail Detail Map Section */
+.trail-detail-map-section {
+  margin-bottom: 2rem;
+}
+
+.trail-detail-map-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trail-detail-map-section h2 svg {
+  color: var(--primary);
+}
+
+.trail-detail-map-container {
+  margin-bottom: 1.5rem;
+}
+
+.trail-detail-map-description {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+
+/* Campsite markers hover effect */
+.custom-tent-marker {
+  transition: transform 0.2s;
+}
+
+.custom-tent-marker:hover {
+  transform: scale(1.1);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .detail-main {
