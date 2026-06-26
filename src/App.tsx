@@ -69,7 +69,7 @@ function App() {
     setCurrentView('planner');
   }, []);
 
-  const handleSelectTrailForPlanning = useCallback(() => {
+  const handleCreateNewTrip = useCallback(() => {
     setSelectedTrail(null);
     setCurrentView('discovery');
   }, []);
@@ -117,7 +117,7 @@ function App() {
             onSaveTrip={handleSaveTrip}
             onDeleteTrip={handleDeleteTrip}
             onBack={handleBackToDiscovery}
-            onSelectTrail={handleSelectTrailForPlanning}
+            onSelectTrail={handleCreateNewTrip}
           />
         )}
       </main>

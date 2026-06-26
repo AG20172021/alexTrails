@@ -35,6 +35,14 @@ export default function TripPlanner({
   const [groupSize, setGroupSize] = useState(2);
   const [tripDays, setTripDays] = useState<TripDay[]>([]);
 
+  // Auto-enter creation mode when a trail is provided
+  useEffect(() => {
+    if (trail && !isCreating && !editingTrip && !showTripDetail) {
+      setIsCreating(true);
+    }
+  }, [trail, isCreating, editingTrip, showTripDetail]);
+
+  // Initialize form when entering creation mode
   useEffect(() => {
     if (trail && isCreating && tripDays.length === 0) {
       // Initialize with default day
